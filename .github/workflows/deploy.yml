@@ -22,7 +22,7 @@ jobs:
       - name: Setup CLI
         run: npm install -g @salesforce/cli
 
-      # Auth TEST
+      # Auth TEST Org
       - name: Authenticate TEST
         run: |
           echo "${{ secrets.SF_AUTH_TEST }}" > test.txt
