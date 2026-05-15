@@ -11,7 +11,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      # Detect first deployment (TEST only for simplicity)
+      # Detect first deployment process (TEST only for simplicity)
       - name: Check TEST Cache
         id: cache-check
         uses: actions/cache@v4
