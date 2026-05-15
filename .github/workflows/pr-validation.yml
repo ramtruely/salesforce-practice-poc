@@ -43,3 +43,7 @@ jobs:
           echo "Running package coverage"
           echo "Running risk assessment"
           echo "Running unit test gate"
+      - name: Debug cache
+        run: |
+          echo "Cache hit: ${{ steps.cache-check.outputs.cache-hit }}"
+          echo "Validation Level: $VALIDATION_LEVEL"    
