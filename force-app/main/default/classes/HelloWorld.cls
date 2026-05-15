@@ -1,5 +1,5 @@
 public with sharing class HelloWorld {
-    public HelloWorld() {
-
+    public static String sayHello() {
+        return 'Hello DevOps POC!';
     }
 }
