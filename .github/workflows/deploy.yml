@@ -1,6 +1,8 @@
 name: Deployment
 
 on:
+  push:
+    branches: [pr-master]  
   workflow_run:
     workflows: ["PR Validation"]
     types:
