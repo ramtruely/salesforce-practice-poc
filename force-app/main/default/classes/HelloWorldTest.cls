@@ -1,4 +1,4 @@
-public with sharing class HelloWorld {
+public with sharing class HelloWorldTest {
     public static String sayHello() {
         return 'Hello DevOps POC!';
     }
