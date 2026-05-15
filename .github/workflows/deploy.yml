@@ -47,6 +47,11 @@ jobs:
         run: |
           sf project deploy start --target-org LOAD --test-level NoTestRun
 
+      - name: Create Deployment Marker
+        run: |
+          mkdir -p .deploy_marker_test
+          echo "done" > .deploy_marker_test/status.txt    
+
       # Save marker
       - name: Save Deployment Marker
         uses: actions/cache@v4
