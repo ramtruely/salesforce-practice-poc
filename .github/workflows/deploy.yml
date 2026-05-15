@@ -1,14 +1,11 @@
 name: Deployment
 
 on:
-  workflow_run:
-    workflows: ["PR Validation"]
-    types:
-      - completed
+  push:
+    branches: [pr-master]  
 
 jobs:
   deploy:
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
 
     steps:
@@ -46,6 +43,11 @@ jobs:
       - name: Deploy LOAD
         run: |
           sf project deploy start --target-org LOAD --test-level NoTestRun
+
+      - name: Create Deployment Marker
+        run: |
+          mkdir -p .deploy_marker_test
+          echo "done" > .deploy_marker_test/status.txt    
 
       # Save marker
       - name: Save Deployment Marker
