@@ -1,0 +1,55 @@
+name: Deployment
+
+on:
+  workflow_run:
+    workflows: ["PR Validation"]
+    types:
+      - completed
+
+jobs:
+  deploy:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      # Detect first deploy
+      - name: Check TEST Cache
+        id: cache-check
+        uses: actions/cache@v4
+        with:
+          path: .deploy_marker_test
+          key: deploy-marker-TEST
+
+      - name: Setup CLI
+        run: npm install -g @salesforce/cli
+
+      # Auth TEST
+      - name: Authenticate TEST
+        run: |
+          echo "${{ secrets.SF_AUTH_TEST }}" > test.txt
+          sf org login sfdx-url --sfdx-url-file test.txt --alias TEST
+
+      # Auth LOAD
+      - name: Authenticate LOAD
+        run: |
+          echo "${{ secrets.SF_AUTH_LOAD }}" > load.txt
+          sf org login sfdx-url --sfdx-url-file load.txt --alias LOAD
+
+      # Deploy TEST
+      - name: Deploy TEST
+        run: |
+          sf project deploy start --target-org TEST --test-level NoTestRun
+
+      # Deploy LOAD
+      - name: Deploy LOAD
+        run: |
+          sf project deploy start --target-org LOAD --test-level NoTestRun
+
+      # Save marker
+      - name: Save Deployment Marker
+        uses: actions/cache@v4
+        with:
+          path: .deploy_marker_test
+          key: deploy-marker-TEST
